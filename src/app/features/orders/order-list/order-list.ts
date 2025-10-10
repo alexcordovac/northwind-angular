@@ -6,6 +6,6 @@ import { MatCardModule } from '@angular/material/card';
   standalone: true,
   imports: [MatCardModule],
   templateUrl: './order-list.html',
-  styleUrl: './order-list.scss'
+  styleUrl: './order-list.scss',
 })
 export class OrderList {}

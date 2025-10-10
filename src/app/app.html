@@ -1,34 +1,55 @@
 <mat-drawer-container class="layout-container" autosize>
-
   <!-- Left sidebar -->
-  <mat-drawer class="layout-sidebar" mode="side" opened disableClose [autoFocus]="false"
-    [class.layout-sidebar--collapsed]="menuCollapsed()">
+  <mat-drawer
+    class="layout-sidebar"
+    mode="side"
+    opened
+    disableClose
+    [autoFocus]="false"
+    [class.layout-sidebar--collapsed]="menuCollapsed()"
+  >
     <div class="sidebar__header">
-      <button mat-icon-button class="sidebar__brand" aria-label="NorthWind home" [routerLink]="['/']"
-        [matTooltip]="menuCollapsed() ? 'NorthWind' : ''" matTooltipPosition="right">
+      <button
+        mat-icon-button
+        class="sidebar__brand"
+        aria-label="NorthWind home"
+        [routerLink]="['/']"
+        [matTooltip]="menuCollapsed() ? 'NorthWind' : ''"
+        matTooltipPosition="right"
+      >
         <mat-icon>donut_large</mat-icon>
       </button>
       @if (!menuCollapsed()) {
-      <span class="sidebar__title">NorthWind</span>
+        <span class="sidebar__title">NorthWind</span>
       }
     </div>
     <mat-divider class="sidebar__divider" />
     <mat-nav-list class="sidebar__list">
       @for (item of menuItems(); track item.route) {
-      <mat-list-item [routerLink]="item.route" routerLinkActive="sidebar__item--active" [matTooltip]="menuCollapsed() ? item.label : ''" matTooltipPosition="right">
-        <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
-        <div matListItemTitle>{{ item.label }}</div>
-      </mat-list-item>
+        <mat-list-item
+          [routerLink]="item.route"
+          routerLinkActive="sidebar__item--active"
+          [matTooltip]="menuCollapsed() ? item.label : ''"
+          matTooltipPosition="right"
+        >
+          <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+          <div matListItemTitle>{{ item.label }}</div>
+        </mat-list-item>
       }
     </mat-nav-list>
   </mat-drawer>
 
   <mat-drawer-content>
-
     <!-- Top bar -->
     <mat-toolbar class="topbar" color="primary">
-      <button mat-icon-button type="button" aria-label="Toggle navigation" (click)="toggleMenu()"
-        [matTooltip]="collapseTooltip()" matTooltipPosition="right">
+      <button
+        mat-icon-button
+        type="button"
+        aria-label="Toggle navigation"
+        (click)="toggleMenu()"
+        [matTooltip]="collapseTooltip()"
+        matTooltipPosition="right"
+      >
         <mat-icon>{{ menuCollapsed() ? 'chevron_right' : 'chevron_left' }}</mat-icon>
       </button>
       <span class="topbar__title">Operations</span>

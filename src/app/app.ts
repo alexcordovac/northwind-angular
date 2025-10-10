@@ -21,10 +21,10 @@ import { MenuItem } from './shared/models/menu-item.model';
     MatButtonModule,
     MatTooltipModule,
     MatListModule,
-    MatDividerModule
+    MatDividerModule,
   ],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
 })
 export class App {
   protected readonly menuCollapsed = signal<boolean>(false);
@@ -32,17 +32,17 @@ export class App {
     {
       label: 'Orders',
       icon: 'shopping_cart',
-      route: '/orders'
+      route: '/orders',
     },
     {
       label: 'Products',
       icon: 'inventory_2',
-      route: '/products'
-    }
+      route: '/products',
+    },
   ]);
 
   protected readonly collapseTooltip = computed(() =>
-    this.menuCollapsed() ? 'Expand navigation' : 'Collapse navigation'
+    this.menuCollapsed() ? 'Expand navigation' : 'Collapse navigation',
   );
 
   protected toggleMenu(): void {

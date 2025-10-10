@@ -6,8 +6,6 @@ import { MatCardModule } from '@angular/material/card';
   standalone: true,
   imports: [MatCardModule],
   templateUrl: './product-list.html',
-  styleUrl: './product-list.scss'
+  styleUrl: './product-list.scss',
 })
-export class ProductList {
-
-}
+export class ProductList {}

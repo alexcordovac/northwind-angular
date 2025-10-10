@@ -10,9 +10,8 @@ describe('OrderList', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [OrderList],
-      providers: [provideZonelessChangeDetection()]
-    })
-    .compileComponents();
+      providers: [provideZonelessChangeDetection()],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(OrderList);
     component = fixture.componentInstance;
