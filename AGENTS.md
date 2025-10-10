@@ -54,6 +54,7 @@ Guidelines below reflect Angular 20 conventions, Angular Material integration, a
 - Cover complex forms and data tables with Angular Component Test Harnesses; focus on behavior (what) instead of implementation details (how).
 - Add integration tests per critical workflow (order create, approval, fulfillment) using Cypress or Playwright; stub backend responses via MSW or similar.
 - Track accessibility regressions with automated checks (e.g., `@axe-core/playwright`) and include them in CI.
+- Prefer Angular CLI generators (`ng generate component/service ...`) so specs are scaffolded automatically; when files are added manually, create the corresponding tests immediately.
 
 ## Tooling & Automation
 - Configure ESLint (`ng add @angular-eslint/schematics`) with custom rules enforcing layering boundaries and selector naming.
