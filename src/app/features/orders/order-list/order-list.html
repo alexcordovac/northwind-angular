@@ -88,7 +88,9 @@
 
         <ng-container matColumnDef="freight">
           <th mat-header-cell *matHeaderCellDef>Freight</th>
-          <td mat-cell *matCellDef="let order">{{ order.freight | currency: 'USD':'symbol-narrow' }}</td>
+          <td mat-cell *matCellDef="let order">
+            {{ order.freight | currency: 'USD' : 'symbol-narrow' }}
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="shipTo">
@@ -106,7 +108,6 @@
           <td mat-cell *matCellDef="let order">
             <mat-chip
               [color]="formatStatus(order) === 'shipped' ? 'primary' : 'warn'"
-
               appearance="outlined"
               class="orders-table__status"
             >

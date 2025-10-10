@@ -32,6 +32,7 @@ import {
   ConfirmationDialogComponent,
   ConfirmationDialogData,
 } from '../../../shared/components/confirmation-dialog/confirmation-dialog';
+import { OrderStatus } from '../../../shared/models/order-status.model';
 
 @Component({
   selector: 'app-order-list',
@@ -101,7 +102,7 @@ export class OrderList implements OnInit {
       .subscribe((value) => this.facade.setQuery(value.trim()));
   }
 
-  protected formatStatus(order: Order): 'shipped' | 'pending' {
+  protected formatStatus(order: Order): OrderStatus {
     return order.shippedDate ? 'shipped' : 'pending';
   }
 
