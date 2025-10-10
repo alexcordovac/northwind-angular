@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Output, effect, input, signal } from '@angular/core';
-import { NgIf } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -12,7 +11,7 @@ import { SearchEvent } from '@shared/models/search-event.model';
 @Component({
   selector: 'app-search-input',
   standalone: true,
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, NgIf],
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule],
   template: `
     <mat-form-field class="search-input" appearance="outline" subscriptSizing="dynamic">
       <mat-label>{{ label() }}</mat-label>

@@ -40,8 +40,8 @@ import { SearchEvent } from '@shared/models/search-event.model';
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatTableModule,
-    MatTooltipModule,
-  ],
+    MatTooltipModule
+],
   templateUrl: './order-list.html',
   styleUrl: './order-list.scss',
 })

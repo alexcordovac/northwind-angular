@@ -6,9 +6,10 @@
     </div>
 
     <mat-chip-set class="orders-card__chips" aria-label="Orders summary">
-      <mat-chip appearance="outlined" color="primary" selected>
-        <mat-icon>inventory_2</mat-icon>
-        {{ getLength() | number }} total
+      <mat-chip inline appearance="outlined" color="primary" selected>
+        <div class="with-icon">
+          <mat-icon inline>inventory_2</mat-icon> {{ getLength() | number }} total
+        </div>
       </mat-chip>
     </mat-chip-set>
   </mat-card-header>
@@ -120,7 +121,11 @@
               @if (!isDeleting(order)) {
                 <mat-icon>delete</mat-icon>
               } @else {
-                <mat-progress-spinner diameter="18" strokeWidth="3" mode="indeterminate"></mat-progress-spinner>
+                <mat-progress-spinner
+                  diameter="18"
+                  strokeWidth="3"
+                  mode="indeterminate"
+                ></mat-progress-spinner>
               }
             </button>
           </td>
