@@ -8,7 +8,16 @@ export const routes: Routes = [
   },
   {
     path: 'orders',
-    loadComponent: () => import('./features/orders/order-list/order-list').then((m) => m.OrderList),
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./features/orders/order-list/order-list').then((m) => m.OrderList),
+      },
+      {
+        path: 'create',
+        loadComponent: () => import('./features/orders/order-create/order-create').then((m) => m.OrderCreate),
+      },
+    ],
   },
   {
     path: 'products',

@@ -1,14 +1,155 @@
-<section class="page">
-  <mat-card appearance="outlined">
-    <mat-card-header>
-      <mat-card-title>Orders</mat-card-title>
-      <mat-card-subtitle>Overview</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p>
-        Start managing customer orders here. Replace this card content with order lists, dashboards,
-        or quick actions as the feature evolves.
-      </p>
-    </mat-card-content>
-  </mat-card>
-</section>
+<mat-card class="orders-card">
+  <mat-card-header class="orders-card__header">
+    <div class="orders-card__title">
+      <h2>Orders</h2>
+      <p>Monitor fulfillment and manage customer commitments in real time.</p>
+    </div>
+
+    <mat-chip-set class="orders-card__chips" aria-label="Orders summary">
+      <mat-chip appearance="outlined" color="primary" selected>
+        <mat-icon>inventory_2</mat-icon>
+        {{ getLength() | number }} total
+      </mat-chip>
+    </mat-chip-set>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="orders-toolbar">
+      <mat-form-field class="orders-search" appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Search orders</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
+        <input
+          matInput
+          type="search"
+          [formControl]="searchControl"
+          placeholder="Search by order, customer, destination"
+        />
+        <button
+          *ngIf="searchControl.value"
+          type="button"
+          mat-icon-button
+          matSuffix
+          aria-label="Clear search"
+          (click)="clearSearch()"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <div class="orders-toolbar__actions">
+        <button mat-flat-button color="primary" [routerLink]="['/orders/create']">
+          <mat-icon>add</mat-icon>
+          New order
+        </button>
+      </div>
+    </div>
+
+    <div class="orders-table" [class.orders-table--loading]="loading()">
+      <mat-progress-bar *ngIf="loading()" mode="indeterminate"></mat-progress-bar>
+
+      <table mat-table [dataSource]="orders()" class="orders-table__mat">
+        <ng-container matColumnDef="orderId">
+          <th mat-header-cell *matHeaderCellDef>#</th>
+          <td mat-cell *matCellDef="let order" class="orders-table__cell-id">
+            <span class="orders-table__badge">#{{ order.orderId }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="customer">
+          <th mat-header-cell *matHeaderCellDef>Customer</th>
+          <td mat-cell *matCellDef="let order">
+            <div class="orders-table__customer">
+              <span class="orders-table__customer-name">{{ order.customerCompanyName }}</span>
+              <span class="orders-table__customer-code">{{ order.customerId }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="orderDate">
+          <th mat-header-cell *matHeaderCellDef>Order date</th>
+          <td mat-cell *matCellDef="let order">{{ order.orderDate | date: 'mediumDate' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="requiredDate">
+          <th mat-header-cell *matHeaderCellDef>Required by</th>
+          <td mat-cell *matCellDef="let order">{{ order.requiredDate | date: 'mediumDate' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="freight">
+          <th mat-header-cell *matHeaderCellDef>Freight</th>
+          <td mat-cell *matCellDef="let order">{{ order.freight | currency: 'USD':'symbol-narrow' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="shipTo">
+          <th mat-header-cell *matHeaderCellDef>Ship to</th>
+          <td mat-cell *matCellDef="let order">
+            <div class="orders-table__destination">
+              <span>{{ order.shipCity }}</span>
+              <span class="orders-table__destination-country">{{ order.shipCountry }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let order">
+            <mat-chip
+              [color]="formatStatus(order) === 'shipped' ? 'primary' : 'warn'"
+
+              appearance="outlined"
+              class="orders-table__status"
+            >
+              {{ formatStatus(order) === 'shipped' ? 'Shipped' : 'Pending' }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="orders-table__actions-header">Actions</th>
+          <td mat-cell *matCellDef="let order" class="orders-table__actions">
+            <button
+              mat-icon-button
+              color="warn"
+              [disabled]="isDeleting(order)"
+              matTooltip="Delete order"
+              (click)="openDeleteDialog(order)"
+            >
+              <mat-icon *ngIf="!isDeleting(order)">delete</mat-icon>
+              <mat-progress-spinner
+                *ngIf="isDeleting(order)"
+                diameter="18"
+                strokeWidth="3"
+                mode="indeterminate"
+              ></mat-progress-spinner>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+
+      <div class="orders-empty" *ngIf="!loading() && orders().length === 0">
+        <mat-icon>inbox</mat-icon>
+        <p>No orders found. Try adjusting your search.</p>
+      </div>
+
+      <mat-paginator
+        [length]="getLength()"
+        [pageSize]="getPageSize()"
+        [pageIndex]="getPageIndex()"
+        [pageSizeOptions]="[10, 25, 50]"
+        (page)="onPageChange($event)"
+        aria-label="Orders pagination"
+      ></mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #deleteDialog let-order>
+  <p>
+    Order <strong>#{{ order.orderId }}</strong> for
+    <strong>{{ order.customerCompanyName }}</strong> will be permanently removed.
+  </p>
+  <p class="dialog-warning">This action cannot be undone.</p>
+</ng-template>

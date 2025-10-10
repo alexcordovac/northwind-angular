@@ -1,0 +1,11 @@
+.lookup-field {
+  width: 100%;
+
+  mat-icon {
+    color: var(--mat-sys-on-surface-variant);
+  }
+
+  mat-progress-spinner {
+    margin-right: 0.25rem;
+  }
+}

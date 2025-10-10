@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 
-import { ProductList } from './product-list';
+import { EntityLookupComponent } from './entity-lookup';
 
-describe('ProductList', () => {
-  let component: ProductList;
-  let fixture: ComponentFixture<ProductList>;
+describe('EntityLookupComponent', () => {
+  let component: EntityLookupComponent<any>;
+  let fixture: ComponentFixture<EntityLookupComponent<any>>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [EntityLookupComponent],
       providers: [provideZonelessChangeDetection()],
-      imports: [ProductList],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ProductList);
+    fixture = TestBed.createComponent(EntityLookupComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -22,3 +22,4 @@ describe('ProductList', () => {
     expect(component).toBeTruthy();
   });
 });
+

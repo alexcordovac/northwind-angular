@@ -8,6 +8,7 @@ Guidelines below reflect Angular 20 conventions, Angular Material integration, a
 - Create dedicated `core/` (singleton services, interceptors, layout shell) and `shared/` (reusable components, pipes, directives) directories; keep them free of feature-specific logic.
 - Use Angular's standalone APIs exclusively (`bootstrapApplication`, route providers, feature providers) to avoid legacy NgModules and reduce boilerplate.
 - Define clear layering boundaries: UI components → feature facades (signals-based state) → domain services → API access layer; prohibit cross-layer imports through lint rules.
+- Co-locate NgRx data-access (actions/reducer/effects/facade) under `features/<domain>/data-access` to keep state orchestration isolated from presentation components.
 - Plan for SSR + hydration early (`ng add @angular/ssr` once ready) to improve performance of data-heavy views such as catalog and dashboards.
 
 ## Routing & Navigation

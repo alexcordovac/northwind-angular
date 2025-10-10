@@ -1,7 +1,10 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
+import { provideRouter } from '@angular/router';
 
 import { OrderList } from './order-list';
+import { ordersFeature, ordersInitialState } from '../data-access/state/orders.reducer';
 
 describe('OrderList', () => {
   let component: OrderList;
@@ -10,7 +13,15 @@ describe('OrderList', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [OrderList],
-      providers: [provideZonelessChangeDetection()],
+      providers: [
+        provideZonelessChangeDetection(),
+        provideRouter([]),
+        provideMockStore({
+          initialState: {
+            [ordersFeature.name]: ordersInitialState,
+          },
+        }),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(OrderList);
@@ -22,3 +33,4 @@ describe('OrderList', () => {
     expect(component).toBeTruthy();
   });
 });
+
