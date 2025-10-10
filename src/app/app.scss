@@ -26,6 +26,9 @@
 }
 
 .sidebar__brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: color-mix(in srgb, var(--mat-sys-primary) 10%, transparent);
   color: var(--mat-sys-primary);
 }
@@ -46,10 +49,14 @@
 }
 
 .sidebar__item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   border-radius: 999px;
   min-height: 40px;
   padding-inline: 0.75rem;
   color: inherit;
+  width: 100%;
 }
 
 .sidebar__item--active {
@@ -68,6 +75,19 @@
 .layout-sidebar--collapsed .sidebar__item {
   justify-content: center;
   padding-inline: 0;
+  gap: 0;
+  --mdc-list-item-leading-space: 0;
+  --mdc-list-item-trailing-space: 0;
+  --mat-list-list-item-leading-icon-start-space: 0;
+  --mat-list-list-item-leading-icon-end-space: 0;
+}
+
+.layout-sidebar--collapsed .sidebar__brand {
+  margin: 0 auto;
+}
+
+.layout-sidebar--collapsed .sidebar__header {
+  justify-content: center;
 }
 
 .layout-sidebar--collapsed .sidebar__item mat-icon {

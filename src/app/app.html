@@ -5,7 +5,7 @@
     [class.layout-sidebar--collapsed]="menuCollapsed()">
     <div class="sidebar__header">
       <button mat-icon-button class="sidebar__brand" aria-label="NorthWind home" [routerLink]="['/']"
-        [matTooltip]="menuCollapsed() ? 'NorthWind' : null" matTooltipPosition="right">
+        [matTooltip]="menuCollapsed() ? 'NorthWind' : ''" matTooltipPosition="right">
         <mat-icon>donut_large</mat-icon>
       </button>
       @if (!menuCollapsed()) {
@@ -15,14 +15,10 @@
     <mat-divider class="sidebar__divider" />
     <mat-nav-list class="sidebar__list">
       @for (item of menuItems(); track item.route) {
-      <a mat-list-item class="sidebar__item" [routerLink]="item.route" routerLinkActive="sidebar__item--active"
-        [routerLinkActiveOptions]="{ exact: true }" [matTooltip]="menuCollapsed() ? item.label : null"
-        matTooltipPosition="right">
+      <mat-list-item [routerLink]="item.route" routerLinkActive="sidebar__item--active" [matTooltip]="menuCollapsed() ? item.label : ''" matTooltipPosition="right">
         <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
-        @if (!menuCollapsed()) {
-        <span matListItemTitle>{{ item.label }}</span>
-        }
-      </a>
+        <div matListItemTitle>{{ item.label }}</div>
+      </mat-list-item>
       }
     </mat-nav-list>
   </mat-drawer>
