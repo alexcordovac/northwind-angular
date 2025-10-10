@@ -74,3 +74,29 @@ Guidelines below reflect Angular 20 conventions, Angular Material integration, a
 - Schedule recurring tech debt reviews to evolve structure as domains (orders, products, employees) scale.
 
 These practices should evolve with the codebase. Revisit the document at each major release to capture lessons learned and adjust to Angular platform updates.
+
+## Commands
+- `ng generate component <component-name>`
+- `ng generate service <service-name>`
+- `ng generate interface <interface-name>`
+- `ng generate pipe <pipe-name>`
+- `ng generate directive <directive-name>`
+- `ng generate module <module-name>`
+- `ng generate guard <guard-name>`
+- `ng generate resolver <resolver-name>`
+- `ng generate interceptor <interceptor-name>`
+- `ng generate feature <feature-name>`
+- `ng generate application <application-name>`
+- `ng generate library <library-name>`
+- `ng generate component <component-name> --project=<project-name>`
+- `ng generate service <service-name> --project=<project-name>`
+- `ng generate interface <interface-name> --project=<project-name>`
+- `ng generate pipe <pipe-name> --project=<project-name>`
+- `ng generate directive <directive-name> --project=<project-name>`
+- `ng generate module <module-name> --project=<project-name>`
+- `ng generate guard <guard-name> --project=<project-name>`
+- `ng generate resolver <resolver-name> --project=<project-name>`
+- `ng generate interceptor <interceptor-name> --project=<project-name>`
+- `ng generate feature <feature-name> --project=<project-name>`
+- `ng generate application <application-name> --project=<project-name>`
+- `ng generate library <library-name> --project=<project-name>`
