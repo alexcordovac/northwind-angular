@@ -1,5 +1,13 @@
 import { CurrencyPipe, DatePipe, DecimalPipe, NgIf } from '@angular/common';
-import { Component, DestroyRef, OnInit, TemplateRef, ViewChild, effect, inject } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+  effect,
+  inject,
+} from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
@@ -20,7 +28,10 @@ import { RouterLink } from '@angular/router';
 import { OrdersFacade } from '../data-access/state/orders.facade';
 import { Order } from '../../../shared/models/order.model';
 import { PageRequest } from '../../../shared/models/page-request.model';
-import { ConfirmationDialogComponent, ConfirmationDialogData } from '../../../shared/components/confirmation-dialog/confirmation-dialog';
+import {
+  ConfirmationDialogComponent,
+  ConfirmationDialogData,
+} from '../../../shared/components/confirmation-dialog/confirmation-dialog';
 
 @Component({
   selector: 'app-order-list',
@@ -53,15 +64,12 @@ export class OrderList implements OnInit {
   private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
   private readonly destroyRef = inject(DestroyRef);
-  private readonly showErrorEffect = effect(
-    () => {
-      const error = this.facade.error();
-      if (error) {
-        this.snackBar.open(error, 'Dismiss', { duration: 4000 });
-        this.facade.resetError();
-      }
+  private readonly showErrorEffect = effect(() => {
+    const error = this.facade.error();
+    if (error) {
+      this.snackBar.open(error, 'Dismiss', { duration: 4000 });
     }
-  );
+  });
 
   protected readonly searchControl = new FormControl('', { nonNullable: true });
   protected readonly displayedColumns = [
@@ -80,6 +88,7 @@ export class OrderList implements OnInit {
   protected readonly loading = this.facade.loading;
   protected readonly deletingIds = this.facade.deletingIds;
   protected readonly request = this.facade.request;
+  protected readonly error = this.facade.error;
 
   @ViewChild('deleteDialog', { static: true })
   protected deleteDialog!: TemplateRef<Order>;
@@ -90,7 +99,6 @@ export class OrderList implements OnInit {
     this.searchControl.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
       .subscribe((value) => this.facade.setQuery(value.trim()));
-
   }
 
   protected formatStatus(order: Order): 'shipped' | 'pending' {
@@ -119,6 +127,10 @@ export class OrderList implements OnInit {
     this.facade.load(request);
   }
 
+  protected retry(): void {
+    this.facade.load(this.request());
+  }
+
   protected clearSearch(): void {
     if (!this.searchControl.value) {
       return;
@@ -142,7 +154,10 @@ export class OrderList implements OnInit {
 
     ref
       .afterClosed()
-      .pipe(filter((confirmed) => confirmed === true), takeUntilDestroyed(this.destroyRef))
+      .pipe(
+        filter((confirmed) => confirmed === true),
+        takeUntilDestroyed(this.destroyRef),
+      )
       .subscribe(() => this.facade.delete(order.orderId));
   }
 

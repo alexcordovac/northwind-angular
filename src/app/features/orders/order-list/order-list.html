@@ -44,6 +44,17 @@
       </div>
     </div>
 
+    <div class="orders-alert" *ngIf="error()">
+      <div class="orders-alert__message">
+        <mat-icon color="warn">error_outline</mat-icon>
+        <span>An error occurred while processing request.</span>
+      </div>
+      <button mat-stroked-button color="primary" type="button" (click)="retry()">
+        <mat-icon>refresh</mat-icon>
+        Retry
+      </button>
+    </div>
+
     <div class="orders-table" [class.orders-table--loading]="loading()">
       <mat-progress-bar *ngIf="loading()" mode="indeterminate"></mat-progress-bar>
 

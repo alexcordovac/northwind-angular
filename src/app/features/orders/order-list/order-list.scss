@@ -68,6 +68,36 @@
   }
 }
 
+.orders-alert {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: color-mix(in srgb, var(--mat-sys-error) 12%, transparent);
+  color: var(--mat-sys-on-surface);
+  border: 1px solid color-mix(in srgb, var(--mat-sys-error) 35%, transparent);
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+.orders-alert__message {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  mat-icon {
+    color: var(--mat-sys-error);
+  }
+}
+
 .orders-table {
   position: relative;
   border-radius: 1rem;
