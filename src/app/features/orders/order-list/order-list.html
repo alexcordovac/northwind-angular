@@ -31,19 +31,23 @@
       </div>
     </div>
 
-    <div class="orders-alert" *ngIf="error()">
-      <div class="orders-alert__message">
-        <mat-icon color="warn">error_outline</mat-icon>
-        <span>{{ error() }}</span>
+    @if (error()) {
+      <div class="orders-alert">
+        <div class="orders-alert__message">
+          <mat-icon color="warn">error_outline</mat-icon>
+          <span>{{ error() }}</span>
+        </div>
+        <button mat-stroked-button color="primary" type="button" (click)="retry()">
+          <mat-icon>refresh</mat-icon>
+          Retry
+        </button>
       </div>
-      <button mat-stroked-button color="primary" type="button" (click)="retry()">
-        <mat-icon>refresh</mat-icon>
-        Retry
-      </button>
-    </div>
+    }
 
     <div class="orders-table" [class.orders-table--loading]="loading()">
-      <mat-progress-bar *ngIf="loading()" mode="indeterminate"></mat-progress-bar>
+      @if (loading()) {
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      }
 
       <table mat-table [dataSource]="orders()" class="orders-table__mat">
         <ng-container matColumnDef="orderId">
@@ -113,13 +117,11 @@
               matTooltip="Delete order"
               (click)="openDeleteDialog(order)"
             >
-              <mat-icon *ngIf="!isDeleting(order)">delete</mat-icon>
-              <mat-progress-spinner
-                *ngIf="isDeleting(order)"
-                diameter="18"
-                strokeWidth="3"
-                mode="indeterminate"
-              ></mat-progress-spinner>
+              @if (!isDeleting(order)) {
+                <mat-icon>delete</mat-icon>
+              } @else {
+                <mat-progress-spinner diameter="18" strokeWidth="3" mode="indeterminate"></mat-progress-spinner>
+              }
             </button>
           </td>
         </ng-container>
@@ -128,10 +130,12 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
 
-      <div class="orders-empty" *ngIf="!loading() && orders().length === 0">
-        <mat-icon>inbox</mat-icon>
-        <p>No orders found. Try adjusting your search.</p>
-      </div>
+      @if (!loading() && orders().length === 0) {
+        <div class="orders-empty">
+          <mat-icon>inbox</mat-icon>
+          <p>No orders found. Try adjusting your search.</p>
+        </div>
+      }
 
       <mat-paginator
         [length]="getLength()"

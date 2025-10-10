@@ -18,16 +18,17 @@ import { SearchEvent } from '@shared/models/search-event.model';
       <mat-label>{{ label() }}</mat-label>
       <mat-icon matPrefix>search</mat-icon>
       <input matInput type="search" [placeholder]="placeholder()" [formControl]="searchControl" />
-      <button
-        *ngIf="searchControl.value"
-        mat-icon-button
-        matSuffix
-        type="button"
-        aria-label="Clear search"
-        (click)="clear()"
-      >
-        <mat-icon>close</mat-icon>
-      </button>
+      @if (searchControl.value) {
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          aria-label="Clear search"
+          (click)="clear()"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      }
     </mat-form-field>
   `,
   styles: `
