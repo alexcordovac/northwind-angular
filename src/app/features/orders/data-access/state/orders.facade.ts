@@ -2,9 +2,9 @@ import { inject, Injectable, Signal } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Observable } from 'rxjs';
-import { CreateOrder } from '../../../../shared/models/create-order.model';
-import { Order } from '../../../../shared/models/order.model';
-import { PageRequest } from '../../../../shared/models/page-request.model';
+import { CreateOrder } from '@shared/models/create-order.model';
+import { Order } from '@shared/models/order.model';
+import { PageRequest } from '@shared/models/page-request.model';
 import { OrdersActions } from './orders.actions';
 import {
   selectIsInitialLoad,

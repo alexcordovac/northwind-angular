@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { catchError, debounceTime, map, mergeMap, of, switchMap, withLatestFrom } from 'rxjs';
-import { OrdersApi } from '../../services/orders-api';
+import { OrdersApi } from '@features/orders/services/orders-api';
 import { OrdersActions } from './orders.actions';
 import { selectOrdersRequest } from './orders.selectors';
 

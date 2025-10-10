@@ -1,8 +1,8 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { CreateOrder } from '../../../../shared/models/create-order.model';
-import { Order } from '../../../../shared/models/order.model';
-import { PageRequest } from '../../../../shared/models/page-request.model';
-import { PagedResponse } from '../../../../shared/models/paged-response.model';
+import { CreateOrder } from '@shared/models/create-order.model';
+import { Order } from '@shared/models/order.model';
+import { PageRequest } from '@shared/models/page-request.model';
+import { PagedResponse } from '@shared/models/paged-response.model';
 
 export const OrdersActions = createActionGroup({
   source: 'Orders',

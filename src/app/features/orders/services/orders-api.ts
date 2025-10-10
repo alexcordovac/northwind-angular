@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { CreateOrder } from '../../../shared/models/create-order.model';
-import { Order } from '../../../shared/models/order.model';
-import { PageRequest } from '../../../shared/models/page-request.model';
-import { BaseCrudService } from '../../../shared/services/base-crud';
-import { environment } from '../../../../environments/environment';
+import { CreateOrder } from '@shared/models/create-order.model';
+import { Order } from '@shared/models/order.model';
+import { PageRequest } from '@shared/models/page-request.model';
+import { BaseCrudService } from '@shared/services/base-crud';
+import { environment } from '@env/environment';
 
 @Injectable({
   providedIn: 'root',

@@ -12,13 +12,13 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { OrdersFacade } from '../data-access/state/orders.facade';
-import { CustomersApi } from '../../../shared/services/customers-api';
-import { EmployeesApi } from '../../../shared/services/employees-api';
-import { EntityLookupComponent } from '../../../shared/components/entity-lookup/entity-lookup';
-import { PageRequest } from '../../../shared/models/page-request.model';
-import { Customer } from '../../../shared/models/customer.model';
-import { Employee } from '../../../shared/models/employee.model';
-import { CreateOrder } from '../../../shared/models/create-order.model';
+import { CustomersApi } from '@shared/services/customers-api';
+import { EmployeesApi } from '@shared/services/employees-api';
+import { EntityLookupComponent } from '@shared/components/entity-lookup/entity-lookup';
+import { PageRequest } from '@shared/models/page-request.model';
+import { Customer } from '@shared/models/customer.model';
+import { Employee } from '@shared/models/employee.model';
+import { CreateOrder } from '@shared/models/create-order.model';
 @Component({
   selector: 'app-order-create',
   standalone: true,

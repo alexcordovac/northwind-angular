@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Customer } from '../models/customer.model';
-import { PageRequest } from '../models/page-request.model';
+import { Customer } from '@shared/models/customer.model';
+import { PageRequest } from '@shared/models/page-request.model';
 import { BaseCrudService } from './base-crud';
-import { environment } from '../../../environments/environment';
+import { environment } from '@env/environment';
 
 @Injectable({
   providedIn: 'root',

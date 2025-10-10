@@ -4,8 +4,8 @@ import { of } from 'rxjs';
 import { provideMockStore } from '@ngrx/store/testing';
 
 import { OrderCreate } from './order-create';
-import { CustomersApi } from '../../../shared/services/customers-api';
-import { EmployeesApi } from '../../../shared/services/employees-api';
+import { CustomersApi } from '@shared/services/customers-api';
+import { EmployeesApi } from '@shared/services/employees-api';
 import { ordersFeature, ordersInitialState } from '../data-access/state/orders.reducer';
 
 const emptyMetadata = {

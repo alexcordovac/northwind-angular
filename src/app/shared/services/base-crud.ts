@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { environment } from '@env/environment';
 import { PageRequest } from '../models/page-request.model';
 import { PagedResponse } from '../models/paged-response.model';
 

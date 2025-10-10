@@ -12,8 +12,8 @@ import { Observable, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { PageRequest } from '../../models/page-request.model';
-import { PagedResponse } from '../../models/paged-response.model';
+import { PageRequest } from '@shared/models/page-request.model';
+import { PagedResponse } from '@shared/models/paged-response.model';
 
 type LoaderFn<T> = (request: PageRequest) => Observable<PagedResponse<T>>;
 

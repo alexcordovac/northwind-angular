@@ -1,7 +1,7 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { PageMetadata } from '../../../../shared/models/page-metadata.model';
-import { PageRequest } from '../../../../shared/models/page-request.model';
-import { Order } from '../../../../shared/models/order.model';
+import { PageMetadata } from '@shared/models/page-metadata.model';
+import { PageRequest } from '@shared/models/page-request.model';
+import { Order } from '@shared/models/order.model';
 import { OrdersActions } from './orders.actions';
 
 export const ordersFeatureKey = 'orders';
