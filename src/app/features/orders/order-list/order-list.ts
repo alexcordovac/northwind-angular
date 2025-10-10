@@ -10,7 +10,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
@@ -30,7 +29,6 @@ import { SearchEvent } from '@shared/models/search-event.model';
     CurrencyPipe,
     DatePipe,
     DecimalPipe,
-    NgIf,
     SearchInput,
     RouterLink,
     MatButtonModule,
@@ -41,7 +39,6 @@ import { SearchEvent } from '@shared/models/search-event.model';
     MatPaginatorModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule,
     MatTableModule,
     MatTooltipModule,
   ],
@@ -51,15 +48,8 @@ import { SearchEvent } from '@shared/models/search-event.model';
 export class OrderList implements OnInit {
   private readonly facade = inject(OrdersFacade);
   private readonly dialog = inject(MatDialog);
-  private readonly snackBar = inject(MatSnackBar);
   private readonly destroyRef = inject(DestroyRef);
-  private readonly showErrorEffect = effect(() => {
-    const error = this.facade.error();
-    if (error) {
-      this.snackBar.open(error, 'Dismiss', { duration: 4000 });
-    }
-  });
-
+  
   protected readonly displayedColumns = [
     'orderId',
     'customer',

@@ -5,6 +5,7 @@ import { provideRouter } from '@angular/router';
 
 import { OrderList } from './order-list';
 import { ordersFeature, ordersInitialState } from '../data-access/state/orders.reducer';
+import { notificationsFeature } from '@core/state/notifications/notifications.reducer';
 
 describe('OrderList', () => {
   let component: OrderList;
@@ -19,6 +20,7 @@ describe('OrderList', () => {
         provideMockStore({
           initialState: {
             [ordersFeature.name]: ordersInitialState,
+            [notificationsFeature.name]: { message: null },
           },
         }),
       ],

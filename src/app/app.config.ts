@@ -12,6 +12,7 @@ import { provideState, provideStore } from '@ngrx/store';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { OrdersEffects } from './features/orders/data-access/state/orders.effects';
 import { ordersFeature } from './features/orders/data-access/state/orders.reducer';
+import { notificationsFeature } from '@core/state/notifications/notifications.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,6 +22,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideStore(),
     provideState(ordersFeature),
+    provideState(notificationsFeature),
     provideEffects(OrdersEffects),
     provideHttpClient(withInterceptorsFromDi()),
   ],
