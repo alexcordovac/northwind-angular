@@ -1,22 +1,12 @@
 import { CurrencyPipe, DatePipe, DecimalPipe, NgIf } from '@angular/common';
-import {
-  Component,
-  DestroyRef,
-  OnInit,
-  TemplateRef,
-  ViewChild,
-  effect,
-  inject,
-} from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Component, DestroyRef, OnInit, TemplateRef, ViewChild, effect, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -28,11 +18,10 @@ import { RouterLink } from '@angular/router';
 import { OrdersFacade } from '@features/orders/data-access/state/orders.facade';
 import { Order } from '@shared/models/order.model';
 import { PageRequest } from '@shared/models/page-request.model';
-import {
-  ConfirmationDialogComponent,
-  ConfirmationDialogData,
-} from '@shared/components/confirmation-dialog/confirmation-dialog';
+import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/components/confirmation-dialog/confirmation-dialog';
 import { OrderStatus } from '@shared/models/order-status.model';
+import { SearchInput } from '@shared/components/search-input/search-input';
+import { SearchEvent } from '@shared/models/search-event.model';
 
 @Component({
   selector: 'app-order-list',
@@ -42,14 +31,13 @@ import { OrderStatus } from '@shared/models/order-status.model';
     DatePipe,
     DecimalPipe,
     NgIf,
-    ReactiveFormsModule,
+    SearchInput,
     RouterLink,
     MatButtonModule,
     MatCardModule,
     MatChipsModule,
     MatDialogModule,
     MatIconModule,
-    MatInputModule,
     MatPaginatorModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
@@ -72,7 +60,6 @@ export class OrderList implements OnInit {
     }
   });
 
-  protected readonly searchControl = new FormControl('', { nonNullable: true });
   protected readonly displayedColumns = [
     'orderId',
     'customer',
@@ -96,10 +83,10 @@ export class OrderList implements OnInit {
 
   ngOnInit(): void {
     this.facade.load(this.request());
+  }
 
-    this.searchControl.valueChanges
-      .pipe(debounceTime(300), distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
-      .subscribe((value) => this.facade.setQuery(value.trim()));
+  protected onSearch(event: SearchEvent): void {
+    this.facade.setQuery(event.query);
   }
 
   protected formatStatus(order: Order): OrderStatus {
@@ -132,13 +119,6 @@ export class OrderList implements OnInit {
     this.facade.load(this.request());
   }
 
-  protected clearSearch(): void {
-    if (!this.searchControl.value) {
-      return;
-    }
-    this.searchControl.setValue('', { emitEvent: true });
-  }
-
   protected openDeleteDialog(order: Order): void {
     const data: ConfirmationDialogData<Order> = {
       title: 'Delete order',
@@ -155,10 +135,7 @@ export class OrderList implements OnInit {
 
     ref
       .afterClosed()
-      .pipe(
-        filter((confirmed) => confirmed === true),
-        takeUntilDestroyed(this.destroyRef),
-      )
+      .pipe(filter((confirmed) => confirmed === true), takeUntilDestroyed(this.destroyRef))
       .subscribe(() => this.facade.delete(order.orderId));
   }
 

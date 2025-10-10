@@ -15,26 +15,13 @@
 
   <mat-card-content>
     <div class="orders-toolbar">
-      <mat-form-field class="orders-search " appearance="outline" subscriptSizing="dynamic">
-        <mat-label>Search orders</mat-label>
-        <mat-icon matPrefix>search</mat-icon>
-        <input
-          matInput
-          type="search"
-          [formControl]="searchControl"
-          placeholder="Search by order, customer, destination"
-        />
-        <button
-          *ngIf="searchControl.value"
-          type="button"
-          mat-icon-button
-          matSuffix
-          aria-label="Clear search"
-          (click)="clearSearch()"
-        >
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
+      <app-search-input
+        class="orders-search"
+        [label]="'Search orders'"
+        [placeholder]="'Search by order, customer, destination'"
+        [initialValue]="request().query ?? ''"
+        (searchChange)="onSearch($event)"
+      ></app-search-input>
 
       <div class="orders-toolbar__actions">
         <button mat-flat-button color="primary" [routerLink]="['/orders/create']">
@@ -47,7 +34,7 @@
     <div class="orders-alert" *ngIf="error()">
       <div class="orders-alert__message">
         <mat-icon color="warn">error_outline</mat-icon>
-        <span>An error occurred while processing request.</span>
+        <span>{{ error() }}</span>
       </div>
       <button mat-stroked-button color="primary" type="button" (click)="retry()">
         <mat-icon>refresh</mat-icon>
