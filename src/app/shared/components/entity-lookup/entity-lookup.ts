@@ -1,7 +1,24 @@
-import { NgFor, NgIf } from '@angular/common';
-import { Component, DestroyRef, effect, forwardRef, inject, input, output, signal } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { CommonModule } from '@angular/common';
+import {
+  Component,
+  DestroyRef,
+  effect,
+  forwardRef,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
+import {
+  ControlValueAccessor,
+  FormControl,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import {
+  MatAutocompleteModule,
+  MatAutocompleteSelectedEvent,
+} from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -21,8 +38,7 @@ type LoaderFn<T> = (request: PageRequest) => Observable<PagedResponse<T>>;
   selector: 'app-entity-lookup',
   standalone: true,
   imports: [
-    NgFor,
-    NgIf,
+    CommonModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
     MatButtonModule,
@@ -62,24 +78,32 @@ export class EntityLookupComponent<T> implements ControlValueAccessor {
         hasPrevious: false,
         hasNext: false,
       },
-    })
+    }),
   );
   readonly displayWith = input<(option: T | null) => string>((option) =>
-    option ? String((option as Record<string, unknown>)?.['name'] ?? (option as Record<string, unknown>)?.['id'] ?? option) : ''
+    option
+      ? String(
+          (option as Record<string, unknown>)?.['name'] ??
+            (option as Record<string, unknown>)?.['id'] ??
+            option,
+        )
+      : '',
   );
-  readonly valueSelector = input<(option: T) => unknown>((option) => (option as Record<string, unknown>)?.['id'] ?? option);
+  readonly valueSelector = input<(option: T) => unknown>(
+    (option) => (option as Record<string, unknown>)?.['id'] ?? option,
+  );
   readonly selectionChange = output<T | null>();
 
   protected readonly searchControl = new FormControl('', { nonNullable: true });
   protected readonly options = signal<T[]>([]);
   protected readonly loading = signal(false);
-  protected readonly isDisabled = signal(false);
   protected readonly selected = signal<unknown>(null);
 
   private onChange: (value: unknown) => void = () => {};
   private onTouched: () => void = () => {};
 
   constructor() {
+    // when the search control changes, fetch the options
     this.searchControl.valueChanges
       .pipe(
         debounceTime(500),
@@ -88,7 +112,7 @@ export class EntityLookupComponent<T> implements ControlValueAccessor {
           this.loading.set(true);
           return this.loader()({ query, page: 1, rows: this.rows(), offset: 0 });
         }),
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({
         next: (response) => {
@@ -101,15 +125,14 @@ export class EntityLookupComponent<T> implements ControlValueAccessor {
         },
       });
 
-    effect(
-      () => {
-        this.loader();
-        this.fetch(this.searchControl.value);
-      },
-      { allowSignalWrites: true }
-    );
+    // when the loader function or search control changes, fetch the options
+    effect(() => {
+      this.loader();
+      this.fetch(this.searchControl.value);
+    });
   }
 
+  // implements ControlValueAccessor
   writeValue(value: unknown): void {
     this.selected.set(value);
     if (!value) {
@@ -126,13 +149,17 @@ export class EntityLookupComponent<T> implements ControlValueAccessor {
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.isDisabled.set(isDisabled);
     if (isDisabled) {
-      this.searchControl.disable({ emitEvent: false });
     } else {
       this.searchControl.enable({ emitEvent: false });
     }
   }
+  // end implements ControlValueAccessor
+
+  protected readonly trackByValue = (option: T) => {
+    const value = this.valueSelector()(option);
+    return value ?? option;
+  };
 
   protected displayFn = (option: T | null) => this.displayWith()(option);
 

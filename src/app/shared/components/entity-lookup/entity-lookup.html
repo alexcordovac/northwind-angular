@@ -6,35 +6,40 @@
     [placeholder]="placeholder()"
     [formControl]="searchControl"
     [matAutocomplete]="auto"
-    [disabled]="isDisabled()"
     (blur)="handleBlur()"
   />
-  <button
-    *ngIf="selected() && !isDisabled()"
-    mat-icon-button
-    matSuffix
-    type="button"
-    aria-label="Clear selection"
-    (click)="clearSelection()"
-  >
-    <mat-icon>close</mat-icon>
-  </button>
-  <mat-progress-spinner
-    *ngIf="loading()"
-    matSuffix
-    diameter="18"
-    strokeWidth="3"
-    mode="indeterminate"
-  ></mat-progress-spinner>
+  @if (selected() && !searchControl.disabled) {
+    <button
+      mat-icon-button
+      matSuffix
+      type="button"
+      aria-label="Clear selection"
+      (click)="clearSelection()"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  }
+  @if (loading()) {
+    <mat-progress-spinner
+      matSuffix
+      diameter="18"
+      strokeWidth="3"
+      mode="indeterminate"
+    ></mat-progress-spinner>
+  }
 
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
-    <mat-option *ngFor="let option of options()" [value]="option">
-      {{ displayFn(option) }}
-    </mat-option>
-    <mat-option *ngIf="!loading() && options().length === 0" disabled>
-      No results found
-    </mat-option>
+    @for (option of options(); track trackByValue(option)) {
+      <mat-option [value]="option">
+        {{ displayFn(option) }}
+      </mat-option>
+    }
+    @if (!loading() && options().length === 0) {
+      <mat-option disabled> No results found </mat-option>
+    }
   </mat-autocomplete>
 
-  <mat-hint *ngIf="hint() as hintValue">{{ hintValue }}</mat-hint>
+  @if (hint(); as hintValue) {
+    <mat-hint>{{ hintValue }}</mat-hint>
+  }
 </mat-form-field>
