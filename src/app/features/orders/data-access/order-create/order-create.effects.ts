@@ -40,18 +40,44 @@ export class OrderCreateEffects {
         return this.productsApi.search(request).pipe(
           map((response) => OrderCreateActions.loadProductsSuccess({ response, append: isLoadMore })),
           catchError((error: HttpErrorResponse | Error) =>
-            of(OrderCreateActions.loadProductsFailure({ error: this.mapError(error) })),
+            of(OrderCreateActions.loadProductsFailure({ error: mapCatalogError(error) })),
           ),
         );
       }),
     ),
   );
+}
 
-  private mapError(error: HttpErrorResponse | Error): string {
-    if (error instanceof HttpErrorResponse) {
-      return error.error?.message ?? error.message ?? 'Unable to load products';
+function mapCatalogError(error: HttpErrorResponse | Error): string {
+  if (error instanceof HttpErrorResponse) {
+    const status = error.status;
+    const serverMessage =
+      typeof error.error === 'string'
+        ? error.error
+        : error.error?.message ?? error.error?.title ?? error.error?.detail ?? null;
+
+    if (status === 0) {
+      return 'Unable to reach the server. Check your connection and retry.';
     }
 
-    return error.message ?? 'Unable to load products';
+    if (status >= 500) {
+      return 'Catalog service is temporarily unavailable. Please try again later.';
+    }
+
+    if (status === 404) {
+      return 'No products were found for your search.';
+    }
+
+    if (status === 401 || status === 403) {
+      return 'You are not authorized to view product data.';
+    }
+
+    if (status >= 400) {
+      return serverMessage ?? 'The catalog request could not be completed. Adjust your search and try again.';
+    }
+
+    return serverMessage ?? 'Unable to load products';
   }
+
+  return error.message ?? 'Unable to load products';
 }
