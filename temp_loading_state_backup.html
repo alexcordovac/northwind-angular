@@ -1,0 +1,23 @@
+<div class="loading-state" [class.loading-state--inline]="variant() === 'inline'">
+  @if (loading()) {
+    <div class="loading-state__content loading-state__content--loading" role="status" aria-live="polite">
+      <mat-progress-spinner diameter="32" strokeWidth="4" mode="indeterminate"></mat-progress-spinner>
+      <span class="loading-state__message">{{ loadingLabel() }}</span>
+    </div>
+  } @else if (error()) {
+    <div class="loading-state__content loading-state__content--error" role="alert">
+      <mat-icon>error_outline</mat-icon>
+      <div class="loading-state__error-body">
+        <span class="loading-state__message">{{ error() }}</span>
+        @if (retry()) {
+          <button mat-stroked-button type="button" color="primary" (click)="onRetry()">
+            <mat-icon>refresh</mat-icon>
+            {{ retryLabel() }}
+          </button>
+        }
+      </div>
+    </div>
+  } @else {
+    <ng-content />
+  }
+</div>

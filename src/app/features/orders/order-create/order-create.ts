@@ -95,7 +95,7 @@ export class OrderCreate implements OnInit, OnDestroy {
   protected readonly customerValue = (customer: Customer) => customer.customerId;
 
   protected readonly productCatalog = this.orderCreateProducts.catalog;
-  protected readonly catalogLoading = this.orderCreateProducts.loading;
+  protected readonly productCatalogLoading = this.orderCreateProducts.loading;
   protected readonly productError = this.orderCreateProducts.error;
   protected readonly selectedProducts = this.orderCreateProducts.selected;
   protected readonly selectedCount = this.orderCreateProducts.selectedCount;
@@ -103,6 +103,10 @@ export class OrderCreate implements OnInit, OnDestroy {
   protected readonly selectedIds = this.orderCreateProducts.selectedIds;
   protected readonly canLoadMore = this.orderCreateProducts.canLoadMore;
   protected readonly hasSelection = this.orderCreateProducts.hasSelection;
+  protected readonly retryProductCatalog = () => {
+    const query = this.lastSearchTerm ?? '';
+    this.orderCreateProducts.search(query);
+  };
 
   constructor() {
     effect(
@@ -193,7 +197,11 @@ export class OrderCreate implements OnInit, OnDestroy {
 
   protected onCatalogScroll(event: Event): void {
     const container = event.target as HTMLElement | null;
-    if (!container || this.catalogLoading()) {
+    if (!container) {
+      return;
+    }
+
+    if (this.productCatalogLoading()) {
       return;
     }
 

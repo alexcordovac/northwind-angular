@@ -44,19 +44,18 @@ const reducer = createReducer(
         },
   ),
   on(OrderCreateActions.searchProducts, (state, { query }) => {
-    if (state.query === query.trim() && !state.loading) {
-      return state;
-    }
+    const trimmedQuery = query.trim();
+    const sameQuery = state.query === trimmedQuery;
 
     return {
       ...state,
       loading: true,
-      query: query.trim(),
+      query: trimmedQuery,
       page: 0,
-      totalRows: 0,
+      totalRows: sameQuery ? state.totalRows : 0,
       endReached: false,
       error: null,
-      products: [],
+      products: sameQuery ? state.products : [],
     };
   }),
   on(OrderCreateActions.loadNextPage, (state) =>
@@ -194,4 +193,3 @@ function roundTo(value: number, precision: number): number {
   const factor = Math.pow(10, precision);
   return Math.round(value * factor) / factor;
 }
-

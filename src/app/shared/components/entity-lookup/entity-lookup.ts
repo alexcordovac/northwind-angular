@@ -24,13 +24,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatOptionModule } from '@angular/material/core';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Observable, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { PageRequest } from '@shared/models/page-request.model';
 import { PagedResponse } from '@shared/models/paged-response.model';
+import { LoadingState } from '@shared/components/loading-state/loading-state';
 
 type LoaderFn<T> = (request: PageRequest) => Observable<PagedResponse<T>>;
 
@@ -46,7 +46,7 @@ type LoaderFn<T> = (request: PageRequest) => Observable<PagedResponse<T>>;
     MatIconModule,
     MatInputModule,
     MatOptionModule,
-    MatProgressSpinnerModule,
+    LoadingState,
   ],
   templateUrl: './entity-lookup.html',
   styleUrl: './entity-lookup.scss',
@@ -65,6 +65,7 @@ export class EntityLookupComponent<T> implements ControlValueAccessor {
   readonly placeholder = input<string>('Search');
   readonly hint = input<string | null>(null);
   readonly rows = input<number>(20);
+  readonly errorMessage = input<string>('Unable to load options. Try again.');
   readonly loader = input<LoaderFn<T>>(() =>
     of({
       items: [],
@@ -97,7 +98,14 @@ export class EntityLookupComponent<T> implements ControlValueAccessor {
   protected readonly searchControl = new FormControl('', { nonNullable: true });
   protected readonly options = signal<T[]>([]);
   protected readonly loading = signal(false);
+  protected readonly error = signal<string | null>(null);
   protected readonly selected = signal<unknown>(null);
+  protected readonly retry = () => {
+    if (this.loading()) {
+      return;
+    }
+    this.fetch(this.searchControl.value);
+  };
 
   private onChange: (value: unknown) => void = () => {};
   private onTouched: () => void = () => {};
@@ -109,6 +117,7 @@ export class EntityLookupComponent<T> implements ControlValueAccessor {
         debounceTime(500),
         distinctUntilChanged(),
         switchMap((query) => {
+          this.error.set(null);
           this.loading.set(true);
           return this.loader()({ query, page: 1, rows: this.rows(), offset: 0 });
         }),
@@ -118,10 +127,12 @@ export class EntityLookupComponent<T> implements ControlValueAccessor {
         next: (response) => {
           this.options.set(response.items);
           this.loading.set(false);
+          this.error.set(null);
         },
         error: () => {
           this.options.set([]);
           this.loading.set(false);
+          this.error.set(this.errorMessage());
         },
       });
 
@@ -150,9 +161,11 @@ export class EntityLookupComponent<T> implements ControlValueAccessor {
 
   setDisabledState(isDisabled: boolean): void {
     if (isDisabled) {
-    } else {
-      this.searchControl.enable({ emitEvent: false });
+      this.searchControl.disable({ emitEvent: false });
+      return;
     }
+
+    this.searchControl.enable({ emitEvent: false });
   }
   // end implements ControlValueAccessor
 
@@ -185,17 +198,21 @@ export class EntityLookupComponent<T> implements ControlValueAccessor {
 
   private fetch(query: string): void {
     this.loading.set(true);
+    this.error.set(null);
     this.loader()({ query, page: 1, rows: this.rows(), offset: 0 })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => {
           this.options.set(response.items);
           this.loading.set(false);
+          this.error.set(null);
         },
         error: () => {
           this.options.set([]);
           this.loading.set(false);
+          this.error.set(this.errorMessage());
         },
       });
   }
 }
+

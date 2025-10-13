@@ -89,9 +89,9 @@
 
             <app-loading-state
               class="products-panel__state"
-              [loading]="catalogLoading()"
+              [loading]="productCatalogLoading()"
               [error]="productError()"
-              [retry]="retryCatalog"
+              [retry]="retryProductCatalog"
               [loadingLabel]="'Loading products…'"
               [retryLabel]="'Retry search'"
             >

@@ -4,8 +4,10 @@
   mat-icon {
     color: var(--mat-sys-on-surface-variant);
   }
-
-  mat-progress-spinner {
-    margin-right: 0.25rem;
-  }
 }
+
+.lookup-loading-state {
+  display: inline-flex;
+  align-items: center;
+}
+

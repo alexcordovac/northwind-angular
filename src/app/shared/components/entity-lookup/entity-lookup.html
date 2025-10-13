@@ -19,14 +19,17 @@
       <mat-icon>close</mat-icon>
     </button>
   }
-  @if (loading()) {
-    <mat-progress-spinner
-      matSuffix
-      diameter="18"
-      strokeWidth="3"
-      mode="indeterminate"
-    ></mat-progress-spinner>
-  }
+
+  <app-loading-state
+    matSuffix
+    class="lookup-loading-state"
+    [loading]="loading()"
+    [error]="error()"
+    [retry]="retry"
+    [loadingLabel]="'Loading...'"
+    [retryLabel]="'Retry'"
+    [variant]="'inline'"
+  ></app-loading-state>
 
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
     @for (option of options(); track trackByValue(option)) {
@@ -35,7 +38,7 @@
       </mat-option>
     }
     @if (!loading() && options().length === 0) {
-      <mat-option disabled> No results found </mat-option>
+      <mat-option disabled>No results found</mat-option>
     }
   </mat-autocomplete>
 
