@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, debounceTime, map, mergeMap, of, switchMap, withLatestFrom } from 'rxjs';
+import { catchError, debounceTime, map, mergeMap, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import { OrdersApi } from '@features/orders/services/orders-api';
 import { OrdersActions } from './orders.actions';
 import { selectOrdersRequest } from './orders.selectors';
@@ -13,6 +14,7 @@ export class OrdersEffects {
   private readonly ordersApi = inject(OrdersApi);
   private readonly store = inject(Store);
   private readonly router = inject(Router);
+  private readonly snackBar = inject(MatSnackBar);
 
   loadOrders$ = createEffect(() =>
     this.actions$.pipe(
@@ -70,11 +72,20 @@ export class OrdersEffects {
     )
   );
 
+  createOrderSuccessNotification$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(OrdersActions.createOrderSuccess),
+        tap(() => this.snackBar.open('Order created successfully', 'Dismiss', { duration: 3000 }))
+      ),
+    { dispatch: false }
+  );
+
   navigateAfterCreate$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(OrdersActions.createOrderSuccess),
-        map(() => this.router.navigate(['/orders']))
+        tap(() => this.router.navigate(['/orders']))
       ),
     { dispatch: false }
   );
