@@ -60,6 +60,176 @@
         </div>
       </section>
 
+      <section class="create-form__section create-form__section--products">
+        <div class="products-header">
+          <div class="products-header__title">
+            <h3>Products</h3>
+            <p>Search the catalog and configure the line items for this order.</p>
+          </div>
+          <div class="products-header__summary">
+            <span class="products-header__summary-item">
+              <mat-icon>inventory_2</mat-icon>
+              {{ selectedCount() }} selected
+            </span>
+            <span class="products-header__summary-item">
+              <mat-icon>attach_money</mat-icon>
+              {{ selectedSubtotal() | currency:'USD':'symbol':'1.2-2' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="products-panel">
+          <div class="products-panel__catalog">
+            <app-search-input
+              class="products-panel__search"
+              [label]="'Search catalog'"
+              [placeholder]="'Filter by product name or supplier'"
+              (searchChange)="onProductSearch($event)"
+            ></app-search-input>
+
+            <div #catalogList class="products-panel__list" (scroll)="onCatalogScroll($event)">
+              @if (productCatalog().length) {
+                @for (product of productCatalog(); track product.productId) {
+                  <div class="products-panel__item">
+                    <div class="products-panel__item-body">
+                      <span class="products-panel__item-name">{{ product.productName }}</span>
+                      <div class="products-panel__item-meta">
+                        <span class="products-panel__price">
+                          {{ (product.unitPrice ?? 0) | currency:'USD':'symbol':'1.2-2' }}
+                        </span>
+                        @if (product.unitsInStock !== null && product.unitsInStock !== undefined) {
+                          <span class="products-panel__stock">
+                            {{ product.unitsInStock }} in stock
+                          </span>
+                        }
+                      </div>
+                      @if (product.quantityPerUnit) {
+                        <span class="products-panel__unit">{{ product.quantityPerUnit }}</span>
+                      }
+                    </div>
+                    <button
+                      mat-stroked-button
+                      type="button"
+                      color="primary"
+                      (click)="addProduct(product)"
+                      [disabled]="isProductSelected(product.productId)"
+                    >
+                      <mat-icon>
+                        {{ isProductSelected(product.productId) ? 'check' : 'add' }}
+                      </mat-icon>
+                      {{ isProductSelected(product.productId) ? 'Added' : 'Add' }}
+                    </button>
+                  </div>
+                }
+              }
+
+              @if (!catalogLoading() && productCatalog().length === 0 && !productError()) {
+                <div class="products-panel__empty">
+                  <mat-icon>search_off</mat-icon>
+                  <p>No products match your search.</p>
+                </div>
+              }
+            </div>
+
+            @if (catalogLoading()) {
+              <div class="products-panel__progress">
+                <mat-progress-spinner diameter="28" strokeWidth="3" mode="indeterminate"></mat-progress-spinner>
+              </div>
+            }
+
+            @if (productError()) {
+              <div class="products-panel__error">
+                <mat-icon>error_outline</mat-icon>
+                <span>{{ productError() }}</span>
+              </div>
+            }
+          </div>
+
+          <div class="products-panel__selection">
+            <div class="products-panel__selection-header">
+              <h4>Selected products</h4>
+              @if (hasSelection()) {
+                <button mat-button type="button" color="warn" (click)="clearSelection()">
+                  <mat-icon>delete_sweep</mat-icon>
+                  Clear all
+                </button>
+              }
+            </div>
+
+            @if (hasSelection()) {
+              <div class="selected-list">
+                @for (item of selectedProducts(); track item.productId) {
+                  <div class="selected-list__row">
+                    <div class="selected-list__info">
+                      <span class="selected-list__name">{{ item.productName }}</span>
+                      @if (item.product?.quantityPerUnit) {
+                        <span class="selected-list__meta">{{ item.product?.quantityPerUnit }}</span>
+                      }
+                    </div>
+
+                    <div class="selected-list__inputs">
+                      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                        <mat-label>Qty</mat-label>
+                        <input
+                          matInput
+                          type="number"
+                          min="1"
+                          [value]="item.quantity"
+                          (input)="onQuantityInput(item.productId, $event)"
+                        />
+                      </mat-form-field>
+
+                      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                        <mat-label>Unit price</mat-label>
+                        <input
+                          matInput
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          [value]="item.unitPrice"
+                          (input)="onUnitPriceInput(item.productId, $event)"
+                        />
+                      </mat-form-field>
+
+                      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                        <mat-label>Discount %</mat-label>
+                        <input
+                          matInput
+                          type="number"
+                          min="0"
+                          max="100"
+                          step="1"
+                          [value]="item.discount * 100"
+                          (input)="onDiscountInput(item.productId, $event)"
+                        />
+                      </mat-form-field>
+                    </div>
+
+                    <div class="selected-list__total">
+                      <span>{{ lineTotal(item) | currency:'USD':'symbol':'1.2-2' }}</span>
+                      <button
+                        mat-icon-button
+                        type="button"
+                        color="warn"
+                        aria-label="Remove product"
+                        (click)="removeProduct(item.productId)"
+                      >
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                }
+              </div>
+            } @else {
+              <div class="products-panel__empty products-panel__empty--selection">
+                <mat-icon>inventory_2</mat-icon>
+                <p>Add products to see them here.</p>
+              </div>
+            }
+          </div>
+        </div>
+      </section>
+
       <section class="create-form__section">
         <h3>Shipping</h3>
         <div class="create-form__grid create-form__grid--stack">

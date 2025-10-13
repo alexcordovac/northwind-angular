@@ -4,6 +4,7 @@ export const environment = {
   endpoints: {
     orders: 'orders',
     customers: 'customers',
-    employees: 'employees'
+    employees: 'employees',
+    products: 'products'
   }
 } as const;

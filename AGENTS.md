@@ -71,6 +71,7 @@ Guidelines below reflect Angular 20 conventions, Angular Material integration, a
 - Keep Prettier & ESLint in sync via `eslint-config-prettier`; run both in pre-commit (Husky) and CI pipelines.
 - Use Angular CLI's environment system for API endpoints and feature flags; avoid hardcoding URLs inside services.
 - Add commit-based versioning (e.g., semantic-release) to align frontend deployments with backend contracts.
+- After completing implementation tasks, run `ng build` and resolve any build errors before concluding work.
 
 ## Security & Compliance
 

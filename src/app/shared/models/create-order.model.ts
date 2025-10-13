@@ -1,3 +1,5 @@
+import { CreateOrderDetail } from './order-detail.model';
+
 export interface CreateOrder {
   customerId: string | number;
   employeeId: number;
@@ -11,4 +13,5 @@ export interface CreateOrder {
   shipPostalCode?: string | null;
   shipCountry: string;
   notes?: string | null;
+  details: CreateOrderDetail[];
 }
