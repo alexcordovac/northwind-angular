@@ -82,7 +82,7 @@ export class EntityLookupComponent<T> implements ControlValueAccessor {
   constructor() {
     this.searchControl.valueChanges
       .pipe(
-        debounceTime(300),
+        debounceTime(500),
         distinctUntilChanged(),
         switchMap((query) => {
           this.loading.set(true);
