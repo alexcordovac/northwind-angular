@@ -73,7 +73,7 @@
             </span>
             <span class="products-header__summary-item">
               <mat-icon>attach_money</mat-icon>
-              {{ selectedSubtotal() | currency:'USD':'symbol':'1.2-2' }}
+              {{ selectedSubtotal() | currency: 'USD' : 'symbol' : '1.2-2' }}
             </span>
           </div>
         </div>
@@ -87,6 +87,48 @@
               (searchChange)="onProductSearch($event)"
             ></app-search-input>
 
+            <div #catalogList class="products-panel__list" (scroll)="onCatalogScroll($event)">
+              @if (productCatalog().length) {
+                @for (product of productCatalog(); track product.productId) {
+                  <div class="products-panel__item">
+                    <div class="products-panel__item-body">
+                      <span class="products-panel__item-name">{{ product.productName }}</span>
+                      <div class="products-panel__item-meta">
+                        <span class="products-panel__price">
+                          {{ product.unitPrice ?? 0 | currency: 'USD' : 'symbol' : '1.2-2' }}
+                        </span>
+                        @if (product.unitsInStock !== null && product.unitsInStock !== undefined) {
+                          <span class="products-panel__stock">
+                            {{ product.unitsInStock }} in stock
+                          </span>
+                        }
+                      </div>
+                      @if (product.quantityPerUnit) {
+                        <span class="products-panel__unit">{{ product.quantityPerUnit }}</span>
+                      }
+                    </div>
+                    <button
+                      mat-stroked-button
+                      type="button"
+                      color="primary"
+                      (click)="addProduct(product)"
+                      [disabled]="isProductSelected(product.productId)"
+                    >
+                      <mat-icon>
+                        {{ isProductSelected(product.productId) ? 'check' : 'add' }}
+                      </mat-icon>
+                      {{ isProductSelected(product.productId) ? 'Added' : 'Add' }}
+                    </button>
+                  </div>
+                }
+              } @else if(!productCatalogLoading() && productCatalog().length === 0 && !productError()){
+                <div class="products-panel__empty">
+                  <mat-icon>search_off</mat-icon>
+                  <p>No products match your search.</p>
+                </div>
+              }
+            </div>
+
             <app-loading-state
               class="products-panel__state"
               [loading]="productCatalogLoading()"
@@ -95,47 +137,6 @@
               [loadingLabel]="'Loading products…'"
               [retryLabel]="'Retry search'"
             >
-              <div #catalogList class="products-panel__list" (scroll)="onCatalogScroll($event)">
-                @if (productCatalog().length) {
-                  @for (product of productCatalog(); track product.productId) {
-                    <div class="products-panel__item">
-                      <div class="products-panel__item-body">
-                        <span class="products-panel__item-name">{{ product.productName }}</span>
-                        <div class="products-panel__item-meta">
-                          <span class="products-panel__price">
-                            {{ (product.unitPrice ?? 0) | currency:'USD':'symbol':'1.2-2' }}
-                          </span>
-                          @if (product.unitsInStock !== null && product.unitsInStock !== undefined) {
-                            <span class="products-panel__stock">
-                              {{ product.unitsInStock }} in stock
-                            </span>
-                          }
-                        </div>
-                        @if (product.quantityPerUnit) {
-                          <span class="products-panel__unit">{{ product.quantityPerUnit }}</span>
-                        }
-                      </div>
-                      <button
-                        mat-stroked-button
-                        type="button"
-                        color="primary"
-                        (click)="addProduct(product)"
-                        [disabled]="isProductSelected(product.productId)"
-                      >
-                        <mat-icon>
-                          {{ isProductSelected(product.productId) ? 'check' : 'add' }}
-                        </mat-icon>
-                        {{ isProductSelected(product.productId) ? 'Added' : 'Add' }}
-                      </button>
-                    </div>
-                  }
-                } @else {
-                  <div class="products-panel__empty">
-                    <mat-icon>search_off</mat-icon>
-                    <p>No products match your search.</p>
-                  </div>
-                }
-              </div>
             </app-loading-state>
           </div>
 
@@ -162,7 +163,7 @@
                     </div>
 
                     <div class="selected-list__inputs">
-                      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                      <mat-form-field appearance="outline" subscriptSizing="dynamic" fxFlex="33">
                         <mat-label>Qty</mat-label>
                         <input
                           matInput
@@ -173,7 +174,7 @@
                         />
                       </mat-form-field>
 
-                      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                      <mat-form-field appearance="outline" subscriptSizing="dynamic" fxFlex="33">
                         <mat-label>Unit price</mat-label>
                         <input
                           matInput
@@ -185,7 +186,7 @@
                         />
                       </mat-form-field>
 
-                      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                      <mat-form-field appearance="outline" subscriptSizing="dynamic" fxFlex="33">
                         <mat-label>Discount %</mat-label>
                         <input
                           matInput
@@ -200,7 +201,7 @@
                     </div>
 
                     <div class="selected-list__total">
-                      <span>{{ lineTotal(item) | currency:'USD':'symbol':'1.2-2' }}</span>
+                      <span>{{ lineTotal(item) | currency: 'USD' : 'symbol' : '1.2-2' }}</span>
                       <button
                         mat-icon-button
                         type="button"
@@ -271,7 +272,12 @@
         <button mat-stroked-button type="button" (click)="navigateBack()" [disabled]="creating()">
           Cancel
         </button>
-        <button mat-flat-button color="primary" type="submit" [disabled]="creating() || form.invalid">
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          [disabled]="creating() || form.invalid"
+        >
           <mat-icon>check</mat-icon>
           Create order
         </button>
