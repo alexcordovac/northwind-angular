@@ -25,6 +25,7 @@ import { SearchEvent } from '@shared/models/search-event.model';
 import { OrderCreateFacade } from '../data-access/order-create/order-create.facade';
 import { Product } from '@shared/models/product.model';
 import { OrderCreateProductSelection } from '../data-access/order-create/order-create.models';
+import { LoadingState } from '@shared/components/loading-state/loading-state';
 
 @Component({
   selector: 'app-order-create',
@@ -43,6 +44,7 @@ import { OrderCreateProductSelection } from '../data-access/order-create/order-c
     MatProgressSpinnerModule,
     EntityLookupComponent,
     SearchInput,
+    LoadingState,
   ],
   templateUrl: './order-create.html',
   styleUrl: './order-create.scss',
@@ -59,6 +61,9 @@ export class OrderCreate implements OnInit, OnDestroy {
   @ViewChild('catalogList') private catalogList?: ElementRef<HTMLDivElement>;
   private hasHandledInitialSearch = false;
   private lastSearchTerm = '';
+  protected readonly retryCatalog = () => {
+    this.orderCreateProducts.search(this.lastSearchTerm);
+  };
 
   protected readonly form = this.fb.group({
     customerId: this.fb.control<string | number | null>(null, Validators.required),

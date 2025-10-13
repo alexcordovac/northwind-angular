@@ -87,62 +87,56 @@
               (searchChange)="onProductSearch($event)"
             ></app-search-input>
 
-            <div #catalogList class="products-panel__list" (scroll)="onCatalogScroll($event)">
-              @if (productCatalog().length) {
-                @for (product of productCatalog(); track product.productId) {
-                  <div class="products-panel__item">
-                    <div class="products-panel__item-body">
-                      <span class="products-panel__item-name">{{ product.productName }}</span>
-                      <div class="products-panel__item-meta">
-                        <span class="products-panel__price">
-                          {{ (product.unitPrice ?? 0) | currency:'USD':'symbol':'1.2-2' }}
-                        </span>
-                        @if (product.unitsInStock !== null && product.unitsInStock !== undefined) {
-                          <span class="products-panel__stock">
-                            {{ product.unitsInStock }} in stock
+            <app-loading-state
+              class="products-panel__state"
+              [loading]="catalogLoading()"
+              [error]="productError()"
+              [retry]="retryCatalog"
+              [loadingLabel]="'Loading products…'"
+              [retryLabel]="'Retry search'"
+            >
+              <div #catalogList class="products-panel__list" (scroll)="onCatalogScroll($event)">
+                @if (productCatalog().length) {
+                  @for (product of productCatalog(); track product.productId) {
+                    <div class="products-panel__item">
+                      <div class="products-panel__item-body">
+                        <span class="products-panel__item-name">{{ product.productName }}</span>
+                        <div class="products-panel__item-meta">
+                          <span class="products-panel__price">
+                            {{ (product.unitPrice ?? 0) | currency:'USD':'symbol':'1.2-2' }}
                           </span>
+                          @if (product.unitsInStock !== null && product.unitsInStock !== undefined) {
+                            <span class="products-panel__stock">
+                              {{ product.unitsInStock }} in stock
+                            </span>
+                          }
+                        </div>
+                        @if (product.quantityPerUnit) {
+                          <span class="products-panel__unit">{{ product.quantityPerUnit }}</span>
                         }
                       </div>
-                      @if (product.quantityPerUnit) {
-                        <span class="products-panel__unit">{{ product.quantityPerUnit }}</span>
-                      }
+                      <button
+                        mat-stroked-button
+                        type="button"
+                        color="primary"
+                        (click)="addProduct(product)"
+                        [disabled]="isProductSelected(product.productId)"
+                      >
+                        <mat-icon>
+                          {{ isProductSelected(product.productId) ? 'check' : 'add' }}
+                        </mat-icon>
+                        {{ isProductSelected(product.productId) ? 'Added' : 'Add' }}
+                      </button>
                     </div>
-                    <button
-                      mat-stroked-button
-                      type="button"
-                      color="primary"
-                      (click)="addProduct(product)"
-                      [disabled]="isProductSelected(product.productId)"
-                    >
-                      <mat-icon>
-                        {{ isProductSelected(product.productId) ? 'check' : 'add' }}
-                      </mat-icon>
-                      {{ isProductSelected(product.productId) ? 'Added' : 'Add' }}
-                    </button>
+                  }
+                } @else {
+                  <div class="products-panel__empty">
+                    <mat-icon>search_off</mat-icon>
+                    <p>No products match your search.</p>
                   </div>
                 }
-              }
-
-              @if (!catalogLoading() && productCatalog().length === 0 && !productError()) {
-                <div class="products-panel__empty">
-                  <mat-icon>search_off</mat-icon>
-                  <p>No products match your search.</p>
-                </div>
-              }
-            </div>
-
-            @if (catalogLoading()) {
-              <div class="products-panel__progress">
-                <mat-progress-spinner diameter="28" strokeWidth="3" mode="indeterminate"></mat-progress-spinner>
               </div>
-            }
-
-            @if (productError()) {
-              <div class="products-panel__error">
-                <mat-icon>error_outline</mat-icon>
-                <span>{{ productError() }}</span>
-              </div>
-            }
+            </app-loading-state>
           </div>
 
           <div class="products-panel__selection">
