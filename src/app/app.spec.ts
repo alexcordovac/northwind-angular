@@ -1,14 +1,24 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { provideMockStore } from '@ngrx/store/testing';
 import { App } from './app';
 import { routes } from './app.routes';
+import { notificationsFeature } from '@core/state/notifications/notifications.reducer';
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [provideZonelessChangeDetection(), provideRouter(routes)],
+      providers: [
+        provideZonelessChangeDetection(),
+        provideRouter(routes),
+        provideMockStore({
+          initialState: {
+            [notificationsFeature.name]: { message: null },
+          },
+        }),
+      ],
     }).compileComponents();
   });
 
