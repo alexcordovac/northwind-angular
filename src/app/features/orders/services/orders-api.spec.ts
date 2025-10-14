@@ -1,7 +1,6 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
-
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { OrdersApi } from './orders-api';
 
 describe('OrdersApi', () => {
@@ -9,8 +8,7 @@ describe('OrdersApi', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideZonelessChangeDetection()],
-      imports: [HttpClientTestingModule],
+      providers: [provideZonelessChangeDetection(), provideHttpClientTesting()]
     });
     service = TestBed.inject(OrdersApi);
   });
