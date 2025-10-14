@@ -5,7 +5,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { catchError, debounceTime, map, mergeMap, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
-import { OrdersApi } from '@features/orders/services/orders-api';
+import { OrdersApi } from '@shared/services/orders-api';
 import { OrdersActions } from './orders.actions';
 import { selectOrdersRequest } from './orders.selectors';
 
