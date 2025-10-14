@@ -17,7 +17,7 @@ export interface OrderCreateState {
 
 const DEFAULT_ROWS = 20;
 
-const initialState: OrderCreateState = {
+export const initialState: OrderCreateState = {
   query: '',
   products: [],
   loading: false,

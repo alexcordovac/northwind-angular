@@ -2,11 +2,11 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { provideMockStore } from '@ngrx/store/testing';
-
 import { OrderCreate } from './order-create';
 import { CustomersApi } from '@shared/services/customers-api';
 import { EmployeesApi } from '@shared/services/employees-api';
 import { ordersFeature, ordersInitialState } from '../data-access/order-list/orders.reducer';
+import { orderCreateFeature, initialState as orderCreateInitialState } from '../data-access/order-create/order-create.reducer';
 
 const emptyMetadata = {
   page: 1,
@@ -43,6 +43,7 @@ describe('OrderCreate', () => {
         provideMockStore({
           initialState: {
             [ordersFeature.name]: ordersInitialState,
+            [orderCreateFeature.name]: orderCreateInitialState,
           },
         }),
         { provide: CustomersApi, useClass: CustomersApiStub },
