@@ -31,7 +31,7 @@ describe('App', () => {
   it('should render the topbar title', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
+    const compiled = fixture.debugElement.nativeElement as HTMLElement;
     expect(compiled.querySelector('.topbar__title')?.textContent).toContain('Operations');
   });
 });
