@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { provideZonelessChangeDetection } from '@angular/core';
 import { LoadingState } from './loading-state';
 
 describe('LoadingState', () => {
@@ -8,7 +8,8 @@ describe('LoadingState', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LoadingState]
+      imports: [LoadingState],
+      providers: [provideZonelessChangeDetection()],
     })
     .compileComponents();
 
