@@ -14,7 +14,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 
-import { OrdersFacade } from '@features/orders/data-access/state/orders.facade';
+import { OrdersFacade } from '@features/orders/data-access/order-list/orders.facade';
 import { Order } from '@shared/models/order.model';
 import { PageRequest } from '@shared/models/page-request.model';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/components/confirmation-dialog/confirmation-dialog';

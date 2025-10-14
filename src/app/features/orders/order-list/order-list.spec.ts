@@ -4,7 +4,7 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { provideRouter } from '@angular/router';
 
 import { OrderList } from './order-list';
-import { ordersFeature, ordersInitialState } from '../data-access/state/orders.reducer';
+import { ordersFeature, ordersInitialState } from '../data-access/order-list/orders.reducer';
 import { notificationsFeature } from '@core/state/notifications/notifications.reducer';
 
 describe('OrderList', () => {

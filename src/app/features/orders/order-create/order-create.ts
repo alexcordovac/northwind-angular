@@ -12,7 +12,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { OrdersFacade } from '../data-access/state/orders.facade';
+import { OrdersFacade } from '../data-access/order-list/orders.facade';
 import { CustomersApi } from '@shared/services/customers-api';
 import { EmployeesApi } from '@shared/services/employees-api';
 import { EntityLookupComponent } from '@shared/components/entity-lookup/entity-lookup';
