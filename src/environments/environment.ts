@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://localhost:7170',
+  apiBaseUrl: 'https://localhost:7170/api/v1',
   endpoints: {
     orders: 'orders',
     customers: 'customers',

@@ -50,8 +50,7 @@ export abstract class BaseCrudService<TEntity, TCreate = Partial<TEntity>> {
   }
 
   delete(id: number | string) {
-    const params = new HttpParams().set('id', id.toString());
-    return this.http.delete<void>(this.buildUrl(), { params });
+    return this.http.delete<void>(this.buildUrl(id.toString()));
   }
 
   protected get httpClient(): HttpClient {

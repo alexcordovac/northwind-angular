@@ -3,16 +3,16 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 
-import { EmployeesApi } from './employees-api';
+import { ProductsApi } from './products-api';
 import { environment } from '@env/environment';
-import { Employee } from '@shared/models/employee.model';
+import { Product } from '@shared/models/product.model';
 import { PagedResponse } from '@shared/models/paged-response.model';
 import { PageRequest } from '@shared/models/page-request.model';
 
-describe('EmployeesApi', () => {
-  let service: EmployeesApi;
+describe('ProductsApi', () => {
+  let service: ProductsApi;
   let http: HttpTestingController;
-  const baseUrl = `${environment.apiBaseUrl}/${environment.endpoints.employees}`;
+  const baseUrl = `${environment.apiBaseUrl}/${environment.endpoints.products}`;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -22,7 +22,7 @@ describe('EmployeesApi', () => {
         provideHttpClientTesting(),
       ],
     });
-    service = TestBed.inject(EmployeesApi);
+    service = TestBed.inject(ProductsApi);
     http = TestBed.inject(HttpTestingController);
   });
 
@@ -30,18 +30,18 @@ describe('EmployeesApi', () => {
     http.verify();
   });
 
-  it('should search employees with paging filters', () => {
-    const request: PageRequest = { page: 3, rows: 15, query: 'nancy', offset: 30 };
-    const mockResponse: PagedResponse<Employee> = {
+  it('should search products using the provided filters', () => {
+    const request: PageRequest = { page: 1, rows: 50, query: 'chocolate', offset: 0 };
+    const mockResponse: PagedResponse<Product> = {
       items: [],
       metadata: {
-        page: 3,
-        rows: 15,
-        offset: 30,
-        query: 'nancy',
+        page: 1,
+        rows: 50,
+        offset: 0,
+        query: 'chocolate',
         totalRows: 0,
         totalPages: 0,
-        hasPrevious: true,
+        hasPrevious: false,
         hasNext: false,
       },
     };
@@ -51,10 +51,9 @@ describe('EmployeesApi', () => {
     });
 
     const req = http.expectOne((httpReq) => httpReq.method === 'GET' && httpReq.url === baseUrl);
-    expect(req.request.params.get('page')).toBe('3');
-    expect(req.request.params.get('rows')).toBe('15');
-    expect(req.request.params.get('offset')).toBe('30');
-    expect(req.request.params.get('query')).toBe('nancy');
+    expect(req.request.params.get('page')).toBe('1');
+    expect(req.request.params.get('rows')).toBe('50');
+    expect(req.request.params.get('query')).toBe('chocolate');
 
     req.flush(mockResponse);
   });
