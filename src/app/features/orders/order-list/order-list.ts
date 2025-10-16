@@ -76,7 +76,12 @@ export class OrderList implements OnInit {
   }
 
   protected onSearch(event: SearchEvent): void {
-    this.facade.setQuery(event.query);
+    const normalized = event.query.trim();
+    const current = this.request().query ?? '';
+    if (normalized === current) {
+      return;
+    }
+    this.facade.setQuery(normalized);
   }
 
   protected formatStatus(order: Order): OrderStatus {
