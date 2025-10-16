@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { canActivateAuthRole } from './guards/auth-role.guard';
 
 export const routes: Routes = [
   {
@@ -8,6 +9,8 @@ export const routes: Routes = [
   },
   {
     path: 'orders',
+    // data: { role: 'gold' },
+    // canActivate: [canActivateAuthRole],
     children: [
       {
         path: '',
@@ -21,11 +24,17 @@ export const routes: Routes = [
   },
   {
     path: 'products',
+    data: { role: 'gold' },
+    canActivate: [canActivateAuthRole],
     loadComponent: () =>
       import('./features/products/product-list/product-list').then((m) => m.ProductList),
   },
   {
-    path: '**',
-    redirectTo: 'orders',
-  },
+    path: 'forbidden',
+    loadComponent: () => import('./shared/components/forbidden/forbidden').then((m) => m.ForbiddenComponent),
+  }
+  // {
+  //   path: '**',
+  //   redirectTo: 'orders',
+  // },
 ];

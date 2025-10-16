@@ -6,5 +6,14 @@ export const environment = {
     customers: 'customers',
     employees: 'employees',
     products: 'products'
+  },
+  auth: {
+    keycloak: {
+      url: 'http://localhost:8080',
+      redirectUri: 'http://localhost:4200',
+      postLogoutRedirectUri: 'http://localhost:4200/logout',
+      realm: 'northwind',
+      clientId: 'northwind-ng'
+    }
   }
 } as const;

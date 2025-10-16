@@ -1,0 +1,53 @@
+.forbidden-card {
+  max-width: 480px;
+  margin: 3rem auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  &__avatar {
+    display: grid;
+    place-items: center;
+    background: rgba(var(--mat-sys-error-rgb), 0.1);
+    border-radius: 999px;
+    width: 48px;
+    height: 48px;
+
+    mat-icon {
+      font-size: 28px;
+    }
+  }
+
+  p {
+    margin: 0;
+    color: var(--mat-sys-color-on-surface-variant, rgba(0, 0, 0, 0.6));
+    line-height: 1.5;
+  }
+
+  &__support {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+
+    mat-icon {
+      font-size: 20px;
+      color: var(--mat-sys-color-primary);
+    }
+  }
+
+  &__link {
+    color: var(--mat-sys-color-primary);
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  mat-card-actions {
+    padding: 0;
+  }
+}

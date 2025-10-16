@@ -1,0 +1,27 @@
+<mat-card class="forbidden-card" appearance="outlined">
+  <mat-card-header>
+    <div mat-card-avatar class="forbidden-card__avatar">
+      <mat-icon color="warn">lock</mat-icon>
+    </div>
+    <mat-card-title>Access denied</mat-card-title>
+    <mat-card-subtitle>We couldn’t authorize this request.</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <p>
+      Your account does not have the permissions required to view this resource. If you believe this is
+      a mistake, please contact an administrator or reach out to our support team.
+    </p>
+    <p class="forbidden-card__support">
+      <mat-icon aria-hidden="true">support_agent</mat-icon>
+      <a class="forbidden-card__link" [href]="supportLink">support@northwind.com</a>
+    </p>
+  </mat-card-content>
+
+  <mat-card-actions align="end">
+    <button mat-button color="primary" routerLink="/">
+      <mat-icon>arrow_back</mat-icon>
+      Go back
+    </button>
+  </mat-card-actions>
+</mat-card>

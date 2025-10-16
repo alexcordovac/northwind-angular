@@ -3,7 +3,6 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideMockStore } from '@ngrx/store/testing';
 import { App } from './app';
-import { routes } from './app.routes';
 import { notificationsFeature } from '@core/state/notifications/notifications.reducer';
 
 describe('App', () => {
@@ -12,7 +11,7 @@ describe('App', () => {
       imports: [App],
       providers: [
         provideZonelessChangeDetection(),
-        provideRouter(routes),
+        provideRouter([]),
         provideMockStore({
           initialState: {
             [notificationsFeature.name]: { message: null },
