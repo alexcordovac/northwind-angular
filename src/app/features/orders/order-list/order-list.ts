@@ -21,6 +21,7 @@ import { ConfirmationDialogComponent, ConfirmationDialogData } from '@shared/com
 import { OrderStatus } from '@shared/models/order-status.model';
 import { SearchInput } from '@shared/components/search-input/search-input';
 import { SearchEvent } from '@shared/models/search-event.model';
+import Keycloak from 'keycloak-js';
 
 @Component({
   selector: 'app-order-list',
@@ -67,12 +68,17 @@ export class OrderList implements OnInit {
   protected readonly deletingIds = this.facade.deletingIds;
   protected readonly request = this.facade.request;
   protected readonly error = this.facade.error;
+  private readonly keycloak = inject(Keycloak);
 
   @ViewChild('deleteDialog', { static: true })
   protected deleteDialog!: TemplateRef<Order>;
 
   ngOnInit(): void {
     this.facade.load(this.request());
+
+    this.keycloak.loadUserInfo().then((user) => {
+      console.log(user);
+    });
   }
 
   protected onSearch(event: SearchEvent): void {

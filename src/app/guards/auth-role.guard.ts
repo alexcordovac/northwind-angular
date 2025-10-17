@@ -1,11 +1,17 @@
-import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  CanActivateFn,
+  Router,
+  RouterStateSnapshot,
+  UrlTree,
+} from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthGuardData, createAuthGuard } from 'keycloak-angular';
 
 const isAccessAllowed = async (
   route: ActivatedRouteSnapshot,
   _: RouterStateSnapshot,
-  authData: AuthGuardData
+  authData: AuthGuardData,
 ): Promise<boolean | UrlTree> => {
   const { authenticated, grantedRoles } = authData;
 
@@ -14,9 +20,15 @@ const isAccessAllowed = async (
     return false;
   }
 
-  const hasRequiredRole = (role: string): boolean =>
-    Object.values(grantedRoles.resourceRoles).some((roles) => roles.includes(role));
+  // Flatten the structure
+  const flatRoles = Object.values(grantedRoles).flatMap((item) =>
+    Array.isArray(item) ? item : Object.values(item).flat(),
+  );
 
+  const hasRequiredRole = (roles: string): boolean =>
+    flatRoles.some((role) => roles.includes(role));
+
+  console.log(grantedRoles);
   if (authenticated && hasRequiredRole(requiredRole)) {
     return true;
   }

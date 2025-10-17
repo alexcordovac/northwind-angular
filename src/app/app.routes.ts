@@ -2,15 +2,15 @@ import { Routes } from '@angular/router';
 import { canActivateAuthRole } from './guards/auth-role.guard';
 
 export const routes: Routes = [
-  {
-    path: '',
-    pathMatch: 'full',
-    redirectTo: 'orders',
-  },
+  // {
+  //   path: '',
+  //   pathMatch: 'full',
+  //   redirectTo: 'orders',
+  // },
   {
     path: 'orders',
-    // data: { role: 'gold' },
-    // canActivate: [canActivateAuthRole],
+    data: { role: 'product_manager, sales_representative, warehouse_clerk' },
+    canActivate: [canActivateAuthRole],
     children: [
       {
         path: '',
@@ -24,7 +24,7 @@ export const routes: Routes = [
   },
   {
     path: 'products',
-    data: { role: 'gold' },
+    data: { role: 'product_manager, sales_representative, warehouse_clerk' },
     canActivate: [canActivateAuthRole],
     loadComponent: () =>
       import('./features/products/product-list/product-list').then((m) => m.ProductList),
